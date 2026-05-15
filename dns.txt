@@ -1,0 +1,27 @@
+! Title: 애드가드 갤러리 DNS 필터 (최적화 수정본)
+! Version: 2026.05.15
+! Description: DNS 환경에 최적화된 오차단 해제 및 광고 차단 규칙
+
+! [Disable incorrect blocking - 오차단 해제]
+! DNS 필터에서 기존 차단을 무효화할 때는 @@(허용) 문법을 사용합니다.
+@@||a*.smlog.co.kr^
+@@||ad-creative.pstatic.net^
+@@||adshnk.com^
+@@||adtouch.adbrix.io^
+@@||api.mumuglobal.com^
+@@||app.appsflyer.com^
+@@||dadispapi.gmarket.co.kr^
+@@||exlogcollector.sooplive.com^
+@@||sdk.airbridge.io^
+@@||searchad-phinf.pstatic.net^
+@@||store-api.mumuglobal.com^
+@@||tivan.naver.com^
+@@||tnkfactory.com^
+
+! [Ads - 광고 도메인 차단]
+||get*ads-*-du.a.run.app^
+||kamp.kakao.com^
+||shortformstats.kakao.com^
+||thumb.kakaocdn.net^
+||trillion.toss.im^
+||veta.naver.com^
