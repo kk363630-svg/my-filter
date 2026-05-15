@@ -1,73 +1,46 @@
-! Title: 애드가드 갤러리 필터 (Safari Optimized)
+! Title: 애드가드 갤러리 필터 (Final iOS Optimized)
 ! Version: 2026.05.16
-! Description: Safari의 제한된 규칙 환경에 최적화된 실전압축 필터입니다.
-! Homepage: https://m.dcinside.com/gallog/cent8649
+! Description: 전 사이트 하단 잔상 제거 및 iOS 시스템 부하 최소화 버전
 
-! --- [Ads] ---
+! --- [전역 잔상 제거: 전 사이트 공통] ---
+! 광고가 사라진 후 하단에 남는 빈 틀을 제거합니다. (스마트 필터링)
+##div:is([id*="adv_"],[class*="adv_wrap"]):is(:empty, :has(iframe))
+##div[style*="position: fixed"][style*="bottom: 0"]:has(iframe):not(:has(nav,form,input))
+##div[style*="z-index: 999"][style*="bottom: 0"]:is(:empty,:has(iframe))
+##iframe[id^="ad_"]:upward(1)
+
+! --- [Ads & Layout Fix] ---
 ##.ad-view
 ##.banner_m
 ##.happy-under-player-mobile
-##.textwidget
 ##[alt$='광고']
 ##[aria-label='배너 광고']
-##[class*='ad'][id^='AD']:not([class*='address'])
-##[class^='basic-banner'][id]
-##[class^='happy-header']
-##[id^='hd_pop']
-##iframe[src*='digitalcamp.co.kr']
-##iframe[src*='targetpush.co.kr']
+##iframe[src*="digitalcamp.co.kr"]
+##iframe[src*="targetpush.co.kr"]
 *##[target='_blank']:has([src*='/banner/'])
-*$script,third-party,domain=nimi.wiki|kissjav.*
-*tcid=$all
 
-! --- [Mobile/Video Streaming Support] ---
-[$domain=/^hoohootv[0-9]*\.[a-z]{2,}/]###img_row_container
-[$domain=/^redvi[0-9]*\.com/]##div[style*="z-index: 9999"]:has(img[src*="/banners/"]), img[src*="/banners/"]
-[$domain=/^tvmon[0-9]*\.[a-z]{2,}/]##.banner_wrap2
-[$domain=/^tvwiki[0-9]*\.net/]###bannerList, #viewCover
-[$domain=/torrent[a-z0-9]*\.[a-z]{2,}/]##[href*='/ad'][target='_blank']:has(img)
-[$domain=/torrent[a-z0-9]*\.[a-z]{2,}/]##div[class$='gallery'][id] [target='_blank']:upward(1)
-
-! --- [Major Sites Optimization] ---
-a-ha.io##div[aria-label="advertisement"]
-algumon.com##div:has([data-tip^='파트너스'], div[style*='height'], ins):is(.card, .deal-2col)
-arca.live##.vrow.hybrid:has(.category-badge)
-auction.co.kr,gmarket.co.kr##.plcc_banner
-avsee.ru##+js(acis, decodeURI, split)
-blog.naver.com,comic.naver.com##[class*='banner_area']
-bunjang.co.kr##div[class*="ProductExternalAdsstyle"]:has(h3:has-text(비슷한 새 상품 보기))
-chimhaha.net,seoul.co.kr,mule.co.kr##[class*='Ad']
-danawa.com,m.cafe.naver.com##[class^='banner']
-! 디시인사이드 광고댓글 opacity 조절 (Safari 성능 고려 필터 간소화)
-dcinside.com##li[id^='comment_']:has(p[class*='txt']:has-text(/^https?:\/\/[A-Za-z0-9-]{2,20}\.[a-z]{2,}/)):not(:has-text(/git|img|twitter|x\.com|youtu/i)):style(opacity: 0.1 !important;)
+! --- [주요 사이트 실전압축] ---
 m.dcinside.com##.layer-bottom-popup, .survey, .view-btm-con
+m.dcinside.com##li:not(.notice):has(> .detail-top-lnk)
+! 디시 광고댓글: Safari 성능을 위해 정규식 간소화
+dcinside.com##li[id^='comment_']:has(p[class*='txt']:has-text(/^https?:\/\//)):not(:has-text(/git|img|twitter|x\.com|youtu/i)):style(opacity: 0.1 !important;)
+algumon.com##div:has([data-tip^='파트너스']):is(.card, .deal-2col)
+arca.live##.vrow.hybrid:has(.category-badge)
 namu.wiki#$#div[class][id]:is(:empty, :has(> iframe[id^='google_ads_iframe'])) { display: none !important; }
 
-! --- [Banner Exception Fix] ---
-! TLD 도메인 선언 오류 수정 (Safari 호환)
+! --- [Google Spam 통합 차단] ---
+! 비정상적인 TLD와 스팸 도메인을 성능 저하 없이 묶었습니다.
+www.google.com##.MjjYud:not(:has([data-id="mosaic"])):has(a[href*=".art"],a[href*=".asia"],a[href*=".be"],a[href*=".baby"],a[href*=".codes"],a[href*=".cloud"],a[href*=".company"],a[href*=".gay"],a[href*=".life"],a[href*=".link"],a[href*=".media"],a[href*=".network"],a[href*=".pw"],a[href*=".shop"],a[href*=".today"],a[href*=".work"],a[href*=".xyz"],a[href*=".auction"],a[href*=".beauty"],a[href*=".click"],a[href*=".date"],a[href*=".delivery"],a[href*=".digital"],a[href*=".guru"],a[href*=".sbs"],a[href*=".uno"],a[href*=".video"],a[href*=".watch"],a[href*=".it"])
+
+! --- [오차단 해제 및 예외 규칙] ---
+$@$link[rel="manifest"]
+@@||ad-img.gmarket.com^$image,domain=m.gmarket.co.kr|auction.co.kr
+@@||wcs.naver.net^$domain=naver.com
 nexon.com,loawa.com,or.kr,go.kr#@#[target='_blank']:has([src*='/banner/'])
 #@#[target='_blank']:has([src*='/banner/']):domain(gg|ps|xyz|ai|chat)
 
-! --- [Google Spam Links - 통합 압축] ---
-! 규칙 개수를 줄이기 위해 수백 개의 개별 규칙을 도메인 확장자별로 통합했습니다.
-www.google.com##.MjjYud:not(:has([data-id="mosaic"])):has(a[href*=".art"], a[href*=".asia"], a[href*=".be"], a[href*=".baby"], a[href*=".codes"], a[href*=".cloud"], a[href*=".company"], a[href*=".gay"], a[href*=".it"], a[href*=".life"], a[href*=".link"], a[href*=".media"], a[href*=".network"], a[href*=".pw"], a[href*=".shop"], a[href*=".today"], a[href*=".work"], a[href*=".xyz"], a[href*=".auction"], a[href*=".autos"], a[href*=".bar"], a[href*=".beauty"], a[href*=".best"], a[href*=".boats"], a[href*=".bond"], a[href*=".boutique"], a[href*=".buzz"], a[href*=".cam"], a[href*=".cards"], a[href*=".casa"], a[href*=".cfd"], a[href*=".click"], a[href*=".coupons"], a[href*=".courses"], a[href*=".cyou"], a[href*=".cv"], a[href*=".date"], a[href*=".delivery"], a[href*=".digital"], a[href*=".directory"], a[href*=".garden"], a[href*=".guru"], a[href*=".hair"], a[href*=".homes"], a[href*=".horse"], a[href*=".lifestyle"], a[href*=".living"], a[href*=".makeup"], a[href*=".monster"], a[href*=".motorcycles"], a[href*=".onl"], a[href*=".pics"], a[href*=".qpon"], a[href*=".sbs"], a[href*=".singles"], a[href*=".social"], a[href*=".study"], a[href*=".surf"], a[href*=".tattoo"], a[href*=".uno"], a[href*=".video"], a[href*=".vu"], a[href*=".watch"], a[href*=".works"], a[href*=".wtf"], a[href*=".yachts"])
-
-! --- [Incorrect blocking Fix] ---
-$@$link[rel="manifest"]
-@@||192.168.$stealth=dpi
-@@||ad-img.gmarket.com^$image,domain=m.gmarket.co.kr|auction.co.kr|www.gmarket.co.kr
-@@||arca.live^$ghide
-@@||wcs.naver.net^$domain=seorinexpress.com|naver.com
-||api-ao.adison.co^$badfilter
-||api.mumuglobal.com^$badfilter
-||app.appsflyer.com^$badfilter
-
-! --- [Tweaks & JavaScript] ---
-! Safari 호환성 강화
-arca.live##+js(execute-script, document.addEventListener('click', e => {const t=e.target.closest(".comment-count");if(t){const o=t.closest("a.vrow");o&&(e.preventDefault(),e.stopImmediatePropagation(),location.href=o.href.split("?")[0]+"#comment")}}, true))
+! --- [스크립트 트윅] ---
+arca.live##+js(execute-script, document.addEventListener('click', e => {const t=e.target.closest(".comment-count");if(t){const o=t.closest("a.vrow");o&&(e.preventDefault(),location.href=o.href.split("?")[0]+"#comment")}}, true))
 m.dcinside.com##+js(set-local-storage-item, imgSizeSetting, ori)
-
-! --- [YouTube PiP Button] ---
-m.youtube.com#%#setInterval(function(){var ts=document.querySelectorAll(".slim-owner-subscribe-button");for(var i=0;i<ts.length;i++){var t=ts[i];if(t.offsetParent!==null&&!t.parentElement.querySelector(".pip-btn")){var b=document.createElement("div");b.className="pip-btn";b.innerText="PiP";b.style.cssText="display:flex;align-items:center;justify-content:center;background-color:#f2f2f2;border-radius:18px;height:36px;padding:0 16px;margin-right:8px;font-family:sans-serif;font-size:14px;font-weight:500;color:#0f0f0f;cursor:pointer;";b.onclick=function(e){e.preventDefault();e.stopPropagation();var v=document.querySelector("video");if(v){v.removeAttribute("disablepictureinpicture");v.requestPictureInPicture()}};t.parentElement.insertBefore(b,t)}}},1000);
 
 !  =============== END (Maginot Line) =============== !
