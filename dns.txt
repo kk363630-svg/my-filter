@@ -1,10 +1,10 @@
 ! Title: 애드가드 갤러리 DNS 필터 (iOS Optimized)
-! Version: 2026.05.16
-! Description: 아이폰 시스템 전체 광고 차단 및 앱 오차단 방지 최적화
+! Version: 2026.05.15
+! Description: DNS 필터링 엔진 전용 문법으로 오류를 수정했습니다.
 
-! --- [1. 오차단 해제: @@ 구문 사용] ---
-! 아이폰에서 앱 실행이 안 되거나 로그인이 씹히는 현상을 방지합니다.
-@@||a.smlog.co.kr^
+! [오차단 해제 - $badfilter 대신 @@ 문법 사용]
+! DNS 필터에서는 차단된 주소를 허용할 때 @@||주소^ 형식을 사용해야 정상 작동합니다.
+@@||a*.smlog.co.kr^
 @@||ad-creative.pstatic.net^
 @@||adshnk.com^
 @@||adtouch.adbrix.io^
@@ -18,16 +18,10 @@
 @@||tivan.naver.com^
 @@||tnkfactory.com^
 
-! --- [2. 시스템 광고 차단] ---
-! 불필요한 와일드카드를 정리하여 필터 처리 속도를 높였습니다.
-||ads-*-du.a.run.app^
+! [추가 광고 차단]
+||get*ads-*-du.a.run.app^
 ||kamp.kakao.com^
 ||shortformstats.kakao.com^
 ||thumb.kakaocdn.net^
 ||trillion.toss.im^
 ||veta.naver.com^
-
-! --- [3. 스팸 및 추적기 추가 차단] ---
-! 아이폰 앱 내에서 발생하는 트래킹 방지
-||ublockdns.com^
-||ublockorigin.com^
