@@ -1,8 +1,9 @@
-! Title: 애드가드 갤러리 필터 (사파리 최적화 수정본)
-! Version: 2026.05.15
-! Description: 사파리 및 애드가드 앱 사용자 규칙용 최적화 버전
+! Title: 애드가드 갤러리 필터 (Safari Optimized)
+! Version: 2026.05.16
+! Description: Safari의 제한된 규칙 환경에 최적화된 실전압축 필터입니다.
+! Homepage: https://m.dcinside.com/gallog/cent8649
 
-! [기본 광고 차단]
+! --- [Ads] ---
 ##.ad-view
 ##.banner_m
 ##.happy-under-player-mobile
@@ -19,49 +20,54 @@
 *$script,third-party,domain=nimi.wiki|kissjav.*
 *tcid=$all
 
-! [도메인별 광고 및 레이어 제거]
+! --- [Mobile/Video Streaming Support] ---
 [$domain=/^hoohootv[0-9]*\.[a-z]{2,}/]###img_row_container
 [$domain=/^redvi[0-9]*\.com/]##div[style*="z-index: 9999"]:has(img[src*="/banners/"]), img[src*="/banners/"]
 [$domain=/^tvmon[0-9]*\.[a-z]{2,}/]##.banner_wrap2
 [$domain=/^tvwiki[0-9]*\.net/]###bannerList, #viewCover
 [$domain=/torrent[a-z0-9]*\.[a-z]{2,}/]##[href*='/ad'][target='_blank']:has(img)
 [$domain=/torrent[a-z0-9]*\.[a-z]{2,}/]##div[class$='gallery'][id] [target='_blank']:upward(1)
+
+! --- [Major Sites Optimization] ---
 a-ha.io##div[aria-label="advertisement"]
 algumon.com##div:has([data-tip^='파트너스'], div[style*='height'], ins):is(.card, .deal-2col)
 arca.live##.vrow.hybrid:has(.category-badge)
 auction.co.kr,gmarket.co.kr##.plcc_banner
-avsee.ru##.at-main > div.main-box > .miso-post-mix .post-wrap
-avsee.ru##.at-side div.main-box:first-child
+avsee.ru##+js(acis, decodeURI, split)
+blog.naver.com,comic.naver.com##[class*='banner_area']
 bunjang.co.kr##div[class*="ProductExternalAdsstyle"]:has(h3:has-text(비슷한 새 상품 보기))
 chimhaha.net,seoul.co.kr,mule.co.kr##[class*='Ad']
-dcinside.com##li[id^='comment_']:has(p[class*='txt']:has-text(/^(https?:\/\/)[A-Za-z0-9]{2,10}(\.[a-z]{2,7}|\.co\.kr)(\/(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9_]{5,9})$/)):style(opacity: 0.1 !important;)
-m.dcinside.com##.layer-bottom-popup
-m.dcinside.com##.menu-scroll-lst.swiper-wrapper > li.swiper-slide:nth-of-type(n+5)
-m.dcinside.com##.view-btm-con
+danawa.com,m.cafe.naver.com##[class^='banner']
+! 디시인사이드 광고댓글 opacity 조절 (Safari 성능 고려 필터 간소화)
+dcinside.com##li[id^='comment_']:has(p[class*='txt']:has-text(/^https?:\/\/[A-Za-z0-9-]{2,20}\.[a-z]{2,}/)):not(:has-text(/git|img|twitter|x\.com|youtu/i)):style(opacity: 0.1 !important;)
+m.dcinside.com##.layer-bottom-popup, .survey, .view-btm-con
 namu.wiki#$#div[class][id]:is(:empty, :has(> iframe[id^='google_ads_iframe'])) { display: none !important; }
-teamblind.com##.coupang_gnb
-teamblind.com##[href^='https://link.coupang.com/re/AFFSDP']
 
-! [사파리 호환용 예외 및 수정 규칙]
-! iOS 사파리에서 manifest 오류 방지
+! --- [Banner Exception Fix] ---
+! TLD 도메인 선언 오류 수정 (Safari 호환)
+nexon.com,loawa.com,or.kr,go.kr#@#[target='_blank']:has([src*='/banner/'])
+#@#[target='_blank']:has([src*='/banner/']):domain(gg|ps|xyz|ai|chat)
+
+! --- [Google Spam Links - 통합 압축] ---
+! 규칙 개수를 줄이기 위해 수백 개의 개별 규칙을 도메인 확장자별로 통합했습니다.
+www.google.com##.MjjYud:not(:has([data-id="mosaic"])):has(a[href*=".art"], a[href*=".asia"], a[href*=".be"], a[href*=".baby"], a[href*=".codes"], a[href*=".cloud"], a[href*=".company"], a[href*=".gay"], a[href*=".it"], a[href*=".life"], a[href*=".link"], a[href*=".media"], a[href*=".network"], a[href*=".pw"], a[href*=".shop"], a[href*=".today"], a[href*=".work"], a[href*=".xyz"], a[href*=".auction"], a[href*=".autos"], a[href*=".bar"], a[href*=".beauty"], a[href*=".best"], a[href*=".boats"], a[href*=".bond"], a[href*=".boutique"], a[href*=".buzz"], a[href*=".cam"], a[href*=".cards"], a[href*=".casa"], a[href*=".cfd"], a[href*=".click"], a[href*=".coupons"], a[href*=".courses"], a[href*=".cyou"], a[href*=".cv"], a[href*=".date"], a[href*=".delivery"], a[href*=".digital"], a[href*=".directory"], a[href*=".garden"], a[href*=".guru"], a[href*=".hair"], a[href*=".homes"], a[href*=".horse"], a[href*=".lifestyle"], a[href*=".living"], a[href*=".makeup"], a[href*=".monster"], a[href*=".motorcycles"], a[href*=".onl"], a[href*=".pics"], a[href*=".qpon"], a[href*=".sbs"], a[href*=".singles"], a[href*=".social"], a[href*=".study"], a[href*=".surf"], a[href*=".tattoo"], a[href*=".uno"], a[href*=".video"], a[href*=".vu"], a[href*=".watch"], a[href*=".works"], a[href*=".wtf"], a[href*=".yachts"])
+
+! --- [Incorrect blocking Fix] ---
 $@$link[rel="manifest"]
-@@||kamp.daum.net^$xhr
-@@||shopping.naver.com^$stealth
-@@||smartstore.naver.com^$stealth
-
-! [유튜브 PiP 버튼 및 기능성 스크립트]
-! 주의: 사파리 앱 내 차단 설정에 따라 작동하지 않을 수 있습니다.
-m.youtube.com#%#//scriptlet('trusted-set-local-storage-item', 'imgSizeSetting', 'ori')
-
-! [구글 스팸 필터 정리 - 사파리 속도 저하 방지를 위한 압축]
-www.google.com##.MjjYud:not(:has([data-id="mosaic"])):has(a[href*=".art"], a[href*=".asia"], a[href*=".baby"], a[href*=".best"], a[href*=".click"], a[href*=".date"], a[href*=".monster"], a[href*=".sbs"], a[href*=".uno"], a[href*=".xyz"])
-
-! [안티 애드블록 우회]
-@@||piku.co.kr^$generichide
-aagag.com##+js(set-cookie, ab, 0)
-dcinside.com###moveOverlay, #gaejukimg
-
-! [오차단 해제 (수익 링크 등)]
-||link.coupang.com/re/AFFHOME?lptag=*$all,reason=수익링크
+@@||192.168.$stealth=dpi
+@@||ad-img.gmarket.com^$image,domain=m.gmarket.co.kr|auction.co.kr|www.gmarket.co.kr
+@@||arca.live^$ghide
+@@||wcs.naver.net^$domain=seorinexpress.com|naver.com
 ||api-ao.adison.co^$badfilter
-||tnkfactory.com^$badfilter
+||api.mumuglobal.com^$badfilter
+||app.appsflyer.com^$badfilter
+
+! --- [Tweaks & JavaScript] ---
+! Safari 호환성 강화
+arca.live##+js(execute-script, document.addEventListener('click', e => {const t=e.target.closest(".comment-count");if(t){const o=t.closest("a.vrow");o&&(e.preventDefault(),e.stopImmediatePropagation(),location.href=o.href.split("?")[0]+"#comment")}}, true))
+m.dcinside.com##+js(set-local-storage-item, imgSizeSetting, ori)
+
+! --- [YouTube PiP Button] ---
+m.youtube.com#%#setInterval(function(){var ts=document.querySelectorAll(".slim-owner-subscribe-button");for(var i=0;i<ts.length;i++){var t=ts[i];if(t.offsetParent!==null&&!t.parentElement.querySelector(".pip-btn")){var b=document.createElement("div");b.className="pip-btn";b.innerText="PiP";b.style.cssText="display:flex;align-items:center;justify-content:center;background-color:#f2f2f2;border-radius:18px;height:36px;padding:0 16px;margin-right:8px;font-family:sans-serif;font-size:14px;font-weight:500;color:#0f0f0f;cursor:pointer;";b.onclick=function(e){e.preventDefault();e.stopPropagation();var v=document.querySelector("video");if(v){v.removeAttribute("disablepictureinpicture");v.requestPictureInPicture()}};t.parentElement.insertBefore(b,t)}}},1000);
+
+!  =============== END (Maginot Line) =============== !
